@@ -1,0 +1,65 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_FRAMEWORK: net7.0
+  DOTNET_VERSION: 7.0.x
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚧 Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0 # avoid shallow clone so nbgv can do its work
+
+      - name: 🔨 Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 🏗️ Run dotnet build
+        id: build
+        run: dotnet build -c release
+
+      - name: 🎨 Run dotnet format
+        id: format
+        run: dotnet format --verbosity diagnostic --verify-no-changes --no-restore
+
+      - name: 🧪 Run dotnet test
+        id: test
+        run: dotnet test -c release --no-restore
+
+  publish:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚧 Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
