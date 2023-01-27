@@ -61,10 +61,13 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v3.3.0
         with:
-          context: .
+          context: "{{defaultContext}}:TodoApi"
           push: true
-          tags: ${{ env.NBGV_SemVer2 }}
-          labels: ${{ env.NBGV_SemVer2 }}
+          tags: ${{ env.NBGV_SimpleVersion }}
+          labels: ${{ env.NBGV_SimpleVersion }}
