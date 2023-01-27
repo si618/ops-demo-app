@@ -50,6 +50,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Nerdbank.GitVersioning
+        uses: dotnet/nbgv@v0.4.0
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2.1.0
         with:
