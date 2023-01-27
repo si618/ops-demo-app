@@ -61,5 +61,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.nbgv.outputs.SemVer2 }}
+          labels: ${{ steps.nbgv.outputs.SemVer2 }}
