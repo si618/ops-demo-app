@@ -5,7 +5,7 @@ services:
     image: si618/argocd-demo-app
     build:
       context: .
-      dockerfile: TodoApi/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - '5001:443'
     environment:
