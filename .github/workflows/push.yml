@@ -11,7 +11,7 @@ env:
   DOTNET_VERSION: 7.0.x
 
 jobs:
-  push:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: 🚧 Checkout
@@ -36,7 +36,7 @@ jobs:
         id: test
         run: dotnet test -c release --no-restore
 
-  publish:
+  push:
     runs-on: ubuntu-latest
     steps:
       - name: 🚧 Checkout
@@ -58,5 +58,6 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3.3.0
         with:
+          context: .
           push: true
-          tags: latest,${{ env.NBGV_SimpleVersion }}
+          tags: si618/argocd-demo-app:latest,si618/argocd-demo-app:${{ env.NBGV_SimpleVersion }}
