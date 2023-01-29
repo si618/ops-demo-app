@@ -11,7 +11,7 @@ env:
   DOTNET_VERSION: 7.0.x
 
 jobs:
-  build:
+  Push:
     runs-on: ubuntu-latest
     steps:
       - name: 🚧 Checkout
@@ -36,19 +36,11 @@ jobs:
         id: test
         run: dotnet test -c release --no-restore
 
-  publish:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚧 Checkout
-        uses: actions/checkout@main
-        with:
-          fetch-depth: 0
-
-      - name: Nerdbank.GitVersioning
-        uses: dotnet/nbgv@v0.4.0
-        with:
-          setAllVars: true
-
+#      - name: Nerdbank.GitVersioning
+#        uses: dotnet/nbgv@v0.4.0
+#        with:
+#          setAllVars: true
+#
       - name: Log in to Docker Hub
         uses: docker/login-action@v2.1.0
         with:
