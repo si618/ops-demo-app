@@ -69,5 +69,4 @@ jobs:
         with:
           context: "{{defaultContext}}:TodoApi"
           push: true
-          tags: ${{ env.NBGV_SimpleVersion }}
-          labels: ${{ env.NBGV_SimpleVersion }}
+          tags: latest,${{ env.NBGV_SimpleVersion }}

@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+  api:
+    image: si618/argocd-demo-app
+    build:
+      context: .
+      dockerfile: TodoApi/Dockerfile
+    ports:
+      - '5001:443'
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_HTTPS_PORT=443
+      # dotnet dev-certs https --clean
+      # dotnet dev-certs https -ep "$env:USERPROFILE\.aspnet\https\TodoApi.pfx" -p argocd-demo-app
+      # dotnet dev-certs https --trust
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=argocd-demo-app
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/TodoApi.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
