@@ -13,24 +13,24 @@ app.UseHttpsRedirection();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-var todo = app.MapGroup("/todo");
+app.MapGet("/", () => Results.Redirect("/swagger"))
+    .ExcludeFromDescription();
+
+var todo = app.MapGroup("/todo")
+    .WithTags("Todo");
 
 todo.MapGet("/", TodoDb.GetAllTodos)
-    .Produces<Todo>()
-    .WithOpenApi();
+    .Produces<Todo>();
 
 todo.MapGet("/complete", TodoDb.GetCompleteTodos)
-    .Produces<Todo>()
-    .WithOpenApi();
+    .Produces<Todo>();
 
 todo.MapGet("/{id:int}", TodoDb.GetTodo)
     .Produces<Todo>()
-    .Produces(StatusCodes.Status404NotFound)
-    .WithOpenApi();
+    .Produces(StatusCodes.Status404NotFound);
 
 todo.MapPost("/", TodoDb.CreateTodo)
-    .Produces(StatusCodes.Status201Created)
-    .WithOpenApi();
+    .Produces(StatusCodes.Status201Created);
 
 todo.MapPut("/{id:int}", TodoDb.UpdateTodo)
     .Produces(StatusCodes.Status204NoContent)
@@ -39,11 +39,6 @@ todo.MapPut("/{id:int}", TodoDb.UpdateTodo)
 
 todo.MapDelete("/{id:int}", TodoDb.DeleteTodo)
     .Produces(StatusCodes.Status200OK)
-    .Produces(StatusCodes.Status404NotFound)
-    .WithOpenApi();
+    .Produces(StatusCodes.Status404NotFound);
 
-app.Run(context =>
-{
-    context.Response.Redirect("swagger");
-    return Task.CompletedTask;
-});
+app.Run();
