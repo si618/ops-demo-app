@@ -1,3 +1,3 @@
-﻿global using Microsoft.EntityFrameworkCore;
-global using DemoApi.Modules.Items;
+﻿global using DemoApi.Modules.Items;
+global using Microsoft.EntityFrameworkCore;
 global using Serilog;

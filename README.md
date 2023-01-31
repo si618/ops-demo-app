@@ -5,12 +5,6 @@ Demo application pushed to [docker hub](https://hub.docker.com/repository/docker
 
 Instructions to build on WSL 2
 
-### Install docker
-
-```bash
-
-```
-
 ### Install dotnet
 
 ```bash
