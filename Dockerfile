@@ -2,10 +2,10 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
 COPY Directory.Build.props ./
-COPY TodoApi/TodoApi.csproj TodoApi/
+COPY DemoApi/DemoApi.csproj DemoApi/
 COPY . .
 
-WORKDIR /src/TodoApi
+WORKDIR /src/DemoApi
 
 RUN dotnet restore
 RUN dotnet build -c release --no-restore
@@ -16,4 +16,4 @@ WORKDIR /app
 
 COPY --from=build /app .
 
-ENTRYPOINT ["dotnet", "TodoApi.dll"]
+ENTRYPOINT ["dotnet", "DemoApi.dll"]
