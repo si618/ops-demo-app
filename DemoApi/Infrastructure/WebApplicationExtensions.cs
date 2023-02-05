@@ -7,8 +7,7 @@ public static class WebApplicationExtensions
     /// </summary>
     public static void UseEndpointsInAssembly(this WebApplication app)
     {
-        var endpointDefinitions = app.Services
-            .GetRequiredService<IReadOnlyCollection<IEndpointDefinition>>();
+        var endpointDefinitions = app.Services.GetRequiredService<ImmutableList<IEndpointDefinition>>();
 
         foreach (var endpointDefinition in endpointDefinitions)
         {

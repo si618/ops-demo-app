@@ -1,5 +1,11 @@
 ﻿global using DemoApi.Infrastructure;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Options;
+global using Microsoft.OpenApi.Any;
+global using Microsoft.OpenApi.Models;
 global using Serilog;
+global using Swashbuckle.AspNetCore.SwaggerGen;
+global using System.Collections.Immutable;
+global using System.Collections.ObjectModel;
 global using System.Reflection;
+global using System.Runtime.Serialization;
