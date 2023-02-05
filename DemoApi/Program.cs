@@ -1,32 +1,18 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.ClearProviders();
-var logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .CreateLogger();
-builder.Logging.AddSerilog(logger);
-
+builder.AddLogging();
+builder.Configuration.AddEnvironmentVariables("DemoApi_");
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.RegisterInMemoryDbModule();
+builder.Services.AddEndpointsInAssembly();
 
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.UseSwagger();
-app.UseSwaggerUI();
-
-// Redirect root to swagger
-app.MapGet("/", () => Results.Redirect("/swagger"))
-    .ExcludeFromDescription();
-
-app.MapInMemoryDbEndpoints();
+app.UseEndpointsInAssembly();
 
 // TODO Create polly module to demo API resilience
-// TODO Create kube module to demo kube integration
+// TODO Create kube module to demo kube integration & resilience
 
 app.Run();
