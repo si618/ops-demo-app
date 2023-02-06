@@ -9,10 +9,13 @@ internal sealed class ItemRepository : IItemRepository
         _db = db;
     }
 
-    public async Task<Item[]> GetAllItems() => await _db.Items.ToArrayAsync();
+    public async Task<Item[]> GetAllItems() => await _db.Items.AsNoTracking().ToArrayAsync();
 
-    public async Task<Item[]> GetCompleteItems() =>
-        await _db.Items.Where(e => e.Status == ItemStatus.Complete).ToArrayAsync();
+    public async Task<Item[]> GetItems(ItemStatus status) =>
+        await _db.Items
+            .AsNoTracking()
+            .Where(e => e.Status == status)
+            .ToArrayAsync();
 
     public async Task<Item?> GetItem(Guid id) => await _db.Items.FindAsync(id);
 

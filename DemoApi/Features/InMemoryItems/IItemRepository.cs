@@ -9,10 +9,10 @@ public interface IItemRepository
     Task<Item[]> GetAllItems();
 
     /// <summary>
-    /// Retrieves items with status <see cref="ItemStatus.Complete"/>
+    /// Retrieves items with specified <paramref name="status"/>
     /// </summary>
-    /// <returns>Array of completed <see cref="Item"/></returns>
-    Task<Item[]> GetCompleteItems();
+    /// <returns>Array of <see cref="Item"/> matching status</returns>
+    Task<Item[]> GetItems(ItemStatus status);
 
     /// <summary>
     /// Retrieves item with id <paramref name="id"/>

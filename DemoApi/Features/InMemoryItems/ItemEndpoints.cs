@@ -21,7 +21,7 @@ public class ItemEndpoints : IEndpointDefinition
         routeGroup.MapGet("/", GetAllItems)
             .Produces<Item>();
 
-        routeGroup.MapGet("/complete", GetCompleteItems)
+        routeGroup.MapGet("/status/{status}", GetItems)
             .Produces<Item>();
 
         routeGroup.MapGet("/{id:guid}", GetItem)
@@ -45,8 +45,8 @@ public class ItemEndpoints : IEndpointDefinition
     public static async Task<IResult> GetAllItems(IItemRepository repository) =>
         TypedResults.Ok(await repository.GetAllItems());
 
-    public static async Task<IResult> GetCompleteItems(IItemRepository repository) =>
-        TypedResults.Ok(await repository.GetCompleteItems());
+    public static async Task<IResult> GetItems(IItemRepository repository, ItemStatus status) =>
+        TypedResults.Ok(await repository.GetItems(status));
 
     public static async Task<IResult> GetItem(IItemRepository repository, Guid id) =>
         await repository.GetItem(id) is { } item
