@@ -4,15 +4,14 @@ builder.AddLogging();
 builder.Configuration.AddEnvironmentVariables("DemoApi_");
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// Use HTTPS_PORT environment variable
+builder.Services.AddHttpsRedirection(_ => { });
 builder.Services.AddEndpointsInAssembly();
 
 var app = builder.Build();
 
+app.UseDeveloperExceptionPage();
 app.UseHttpsRedirection();
-
 app.UseEndpointsInAssembly();
-
-// TODO Create polly module to demo API resilience
-// TODO Create kube module to demo kube integration & resilience
 
 app.Run();
