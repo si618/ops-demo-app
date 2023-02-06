@@ -1,6 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.AddLogging();
+builder.Logging.AddConfiguration();
+
 builder.Configuration.AddEnvironmentVariables("DemoApi_");
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

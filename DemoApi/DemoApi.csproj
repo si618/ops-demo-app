@@ -13,6 +13,8 @@
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+    <PackageReference Include="Serilog.Exceptions.Refit" Version="8.4.0" />
+    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="9.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
@@ -20,4 +22,11 @@
     <InternalsVisibleTo Include="$(MSBuildProjectName).Tests" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Features\Swagger\SwaggerDark.css" />
+    <ContentWithTargetPath Include="Features\Swagger\SwaggerDark.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>SwaggerDark.css</TargetPath>
+    </ContentWithTargetPath>
+  </ItemGroup>
 </Project>
