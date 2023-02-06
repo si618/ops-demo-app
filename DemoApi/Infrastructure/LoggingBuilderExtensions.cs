@@ -6,13 +6,14 @@ public static class LoggingBuilderExtensions
     {
         logging.ClearProviders();
 
+        // TODO Deploy and configure Elastic Stack in Kube, maybe send logs via OpenTelemetry sink?
+
         var logger = new LoggerConfiguration()
             .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder()
                 .WithDefaultDestructurers()
                 .WithDestructurers(new[] { new ApiExceptionDestructurer() }))
             .WriteTo.Console()
-            // TODO Deploy and configure ELK stack in kube, maybe using OpenTelemetry agent?
-            //.WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200")))
+            .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200")))
             .CreateLogger();
 
         logging.AddSerilog(logger);
