@@ -9,6 +9,7 @@ WORKDIR /src/DemoApi
 
 RUN dotnet restore
 RUN dotnet build -c release --no-restore
+RUN dotnet test -c release --no-restore
 RUN dotnet publish -c release -o /app --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0

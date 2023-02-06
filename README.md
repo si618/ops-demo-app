@@ -26,6 +26,7 @@ git clone https://github.com/si618/argocd-demo-app.git
 cd argocd-demo-app
 dotnet restore
 dotnet build --no-restore
+dotnet test --no-restore
 
 # Verify demo app is working locally
 dotnet run --project ./DemoApi

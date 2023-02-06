@@ -10,8 +10,8 @@ services:
       - '42433:443'
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443
-      - ASPNETCORE_HTTPS_PORT=443
+      - ASPNETCORE_URLS=https://+:42443
+      - ASPNETCORE_HTTPS_PORT=42443
       # dotnet dev-certs https --clean
       # dotnet dev-certs https -ep "$env:USERPROFILE\.aspnet\https\DemoApi.pfx" -p demo
       # dotnet dev-certs https --trust
