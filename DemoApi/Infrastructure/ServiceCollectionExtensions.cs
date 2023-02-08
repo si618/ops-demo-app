@@ -2,24 +2,32 @@ namespace DemoApi.Infrastructure;
 
 public static class ServiceCollectionExtensions
 {
-    /// <summary>
-    /// Register IEndpointDefinition services (hat-tip: Nick Chapsas 🙇‍♂️)
-    /// </summary>
-    public static void AddEndpointsInAssembly(this IServiceCollection services)
+    public static void AddDatabasesInAssembly(this IServiceCollection services)
     {
-        var endpointDefinitions = Assembly
+        // TODO Split out from IEndpointDefinition
+        var databases = Assembly
             .GetExecutingAssembly()
             .ExportedTypes
-            .Where(t => typeof(IEndpointDefinition).IsAssignableFrom(t) && t.IsClass)
+            .Where(type => typeof(IEndpointDefinition).IsAssignableFrom(type) &&
+                           type is { IsClass: true, IsAbstract: false })
             .Select(Activator.CreateInstance)
             .Cast<IEndpointDefinition>()
             .ToImmutableList();
 
-        foreach (var endpointDefinition in endpointDefinitions)
+        foreach (var database in databases)
         {
-            endpointDefinition.DefineServices(services);
+            database.DefineServices(services);
         }
+    }
 
-        services.AddSingleton(endpointDefinitions);
+    public static void ConfigureJsonOptions(this IServiceCollection services)
+    {
+        services.Configure<JsonOptions>(options =>
+        {
+            options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            options.SerializerOptions.WriteIndented = true;
+        });
     }
 }

@@ -1,4 +1,4 @@
-namespace DemoApi.Features.Kubernetes;
+namespace DemoApi.Services.Kubernetes;
 
 public class KubeEndpoints : IEndpointDefinition
 {
@@ -11,6 +11,6 @@ public class KubeEndpoints : IEndpointDefinition
 
     public void DefineEndpoints(WebApplication app)
     {
-        // TODO demo kube integration & resilience
+        // TODO Demo kube integration & resilience
     }
 }

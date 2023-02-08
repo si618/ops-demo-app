@@ -1,169 +1,135 @@
 namespace DemoApi.Test;
 
-/// <summary>
-/// Tests to verify endpoints are returning the expected status codes result
-/// </summary>
 public class ItemEndpointsTests
 {
-    [Fact]
-    public async Task GetAllItems_WhenItemsFound_ReturnsStatus200OK()
-    {
-        var items = new Item[] { new() { Name = "Item1" }, new() { Name = "Item2" } };
-        var itemRepository = new Mock<IItemRepository>();
-        itemRepository
-            .Setup(repo => repo.GetAllItems())
-            .ReturnsAsync(items);
+    private readonly ItemEndpoints _api;
+    private readonly Mock<IItemDb> _db;
+    private readonly Item _item;
 
-        var result = await ItemEndpoints.GetAllItems(itemRepository.Object);
+    public ItemEndpointsTests()
+    {
+        _api = new ItemEndpoints();
+        _db = new Mock<IItemDb>();
+        _item = new Item { Id = Guid.NewGuid(), Name = "Name of Item" };
+    }
+
+    [Fact]
+    public async Task SeedItems_ReturnsStatus200OK()
+    {
+        var result = await ItemEndpoints.SeedItems(_db.Object, 10);
+
+        result.Should().Be(TypedResults.Ok());
+    }
+
+    [Fact]
+    public async Task GetItems_WhenItemsFound_ReturnsStatus200OK()
+    {
+        var items = new[] { _item, new() { Name = "Name of another item" } };
+        _db.Setup(db => db.GetItems()).ReturnsAsync(items);
+
+        var result = await ItemEndpoints.GetItems(_db.Object);
 
         result.Should().BeEquivalentTo(TypedResults.Ok(items));
     }
 
     [Fact]
-    public async Task GetAllItems_WhenNoItemsFound_ReturnsStatus200OK()
+    public async Task GetItems_WhenNoItemsFound_ReturnsStatus200OK()
     {
-        var itemRepository = new Mock<IItemRepository>();
-        var items = Array.Empty<Item>();
+        var result = await ItemEndpoints.GetItems(_db.Object);
 
-        var result = await ItemEndpoints.GetAllItems(itemRepository.Object);
-
-        result.Should().BeEquivalentTo(TypedResults.Ok(items));
+        result.Should().BeEquivalentTo(TypedResults.Ok(Array.Empty<Item>()));
     }
 
     [Fact]
-    public async Task GetItems_WhenItemsWithStatusFound_ReturnsStatus200OK()
+    public async Task GetItemsWithStatus_WhenItemsWithStatusFound_ReturnsStatus200OK()
     {
         const ItemStatus status = ItemStatus.Complete;
-        var items = new Item[] { new() { Name = "Item1", Status = status } };
-        var itemRepository = new Mock<IItemRepository>();
-        itemRepository
-            .Setup(repo => repo.GetItems(status))
-            .ReturnsAsync(items);
+        var items = new[] { _item };
+        _db.Setup(db => db.GetItemsWithStatus(status)).ReturnsAsync(items);
 
-        var result = await ItemEndpoints.GetItems(itemRepository.Object, status);
+        var result = await ItemEndpoints.GetItemsWithStatus(_db.Object, status);
 
         result.Should().BeEquivalentTo(TypedResults.Ok(items));
     }
 
     [Fact]
-    public async Task GetItems_WhenNoItemsWithStatusFound_ReturnsStatus200OK()
+    public async Task GetItemsWithStatus_WhenNoItemsWithStatusFound_ReturnsStatus200OK()
     {
-        var itemRepository = new Mock<IItemRepository>();
-        var items = Array.Empty<Item>();
+        var result = await ItemEndpoints.GetItemsWithStatus(_db.Object, ItemStatus.Complete);
 
-        var result = await ItemEndpoints.GetItems(itemRepository.Object, ItemStatus.Complete);
-
-        result.Should().BeEquivalentTo(TypedResults.Ok(items));
+        result.Should().BeEquivalentTo(TypedResults.Ok(Array.Empty<Item>()));
     }
 
     [Fact]
     public async Task GetItem_WhenItemFound_ReturnsStatus200OK()
     {
-        var id = Guid.NewGuid();
-        var item = new Item { Id = id, Name = "Item1" };
-        var itemRepository = new Mock<IItemRepository>();
-        itemRepository
-            .Setup(repo => repo.GetItem(id))
-            .ReturnsAsync(item);
+        _db.Setup(db => db.GetItem(_item.Id)).ReturnsAsync(_item);
 
-        var result = await ItemEndpoints.GetItem(itemRepository.Object, id);
+        var result = await ItemEndpoints.GetItem(_db.Object, _item.Id);
 
-        result.Should().BeEquivalentTo(TypedResults.Ok(item));
+        result.Should().BeEquivalentTo(TypedResults.Ok(_item));
     }
 
     [Fact]
     public async Task GetItem_WhenItemNotFound_ReturnsStatus404NotFound()
     {
-        var itemRepository = new Mock<IItemRepository>();
+        var result = await ItemEndpoints.GetItem(_db.Object, Guid.Empty);
 
-        var result = await ItemEndpoints.GetItem(itemRepository.Object, Guid.Empty);
-
-        result.Should().BeEquivalentTo(TypedResults.NotFound());
+        result.Should().Be(TypedResults.NotFound());
     }
 
     [Fact]
     public async Task CreateItem_WhenItemFound_ReturnsStatus409Conflict()
     {
-        var item = new Item { Name = "Item1" };
-        var itemRepository = new Mock<IItemRepository>();
-        itemRepository
-            .Setup(repo => repo.CreateItem(item))
-            .ReturnsAsync(false);
+        _db.Setup(db => db.GetItem(_item.Id)).ReturnsAsync(_item);
 
-        var result = await new ItemEndpoints().CreateItem(itemRepository.Object, item);
+        var result = await _api.CreateItem(_db.Object, _item);
 
-        result.Should().BeEquivalentTo(TypedResults.Conflict());
+        result.Should().Be(TypedResults.Conflict());
     }
 
     [Fact]
-    public async Task CreateItem_WhenItemNotFound_ReturnsStatus200OK()
+    public async Task CreateItem_WhenItemNotFound_ReturnsStatus201Created()
     {
-        var item = new Item { Id = Guid.NewGuid(), Name = "Item1" };
-        var itemRepository = new Mock<IItemRepository>();
-        itemRepository
-            .Setup(repo => repo.CreateItem(item))
-            .ReturnsAsync(true);
-        var itemEndpoints = new ItemEndpoints();
+        var result = await _api.CreateItem(_db.Object, _item);
 
-        var result = await itemEndpoints.CreateItem(itemRepository.Object, item);
-
-        result.Should().BeEquivalentTo(
-            TypedResults.Created($"/{itemEndpoints.RoutePrefix}/{item.Id}", item));
+        result.Should()
+            .BeEquivalentTo(TypedResults.Created($"/{_api.RoutePrefix}/{_item.Id}", _item));
     }
 
     [Fact]
     public async Task UpdateItem_WhenItemFound_ReturnsStatus204NoContent()
     {
-        var item = new Item { Name = "Item1" };
-        var itemRepository = new Mock<IItemRepository>();
-        itemRepository
-            .Setup(repo => repo.UpdateItem(item))
-            .ReturnsAsync(true);
+        _db.Setup(db => db.GetItem(_item.Id)).ReturnsAsync(_item);
 
-        var result = await ItemEndpoints.UpdateItem(itemRepository.Object, item);
+        var result = await ItemEndpoints.UpdateItem(_db.Object, _item);
 
-        result.Should().BeEquivalentTo(TypedResults.NoContent());
+        result.Should().Be(TypedResults.NoContent());
     }
 
     [Fact]
     public async Task UpdateItem_WhenItemNotFound_ReturnsStatus404NotFound()
     {
-        var item = new Item { Id = Guid.NewGuid(), Name = "Item1" };
-        var itemRepository = new Mock<IItemRepository>();
-        itemRepository
-            .Setup(repo => repo.UpdateItem(item))
-            .ReturnsAsync(false);
+        var result = await ItemEndpoints.UpdateItem(_db.Object, _item);
 
-        var result = await ItemEndpoints.UpdateItem(itemRepository.Object, item);
-
-        result.Should().BeEquivalentTo(TypedResults.NotFound());
+        result.Should().Be(TypedResults.NotFound());
     }
 
     [Fact]
     public async Task DeleteItem_WhenItemFound_ReturnsStatus204NoContent()
     {
-        var item = new Item { Id = Guid.NewGuid(), Name = "Item1" };
-        var itemRepository = new Mock<IItemRepository>();
-        itemRepository
-            .Setup(repo => repo.DeleteItem(item.Id))
-            .ReturnsAsync(true);
+        _db.Setup(db => db.GetItem(_item.Id)).ReturnsAsync(_item);
 
-        var result = await ItemEndpoints.DeleteItem(itemRepository.Object, item.Id);
+        var result = await ItemEndpoints.DeleteItem(_db.Object, _item.Id);
 
-        result.Should().BeEquivalentTo(TypedResults.NoContent());
+        result.Should().Be(TypedResults.NoContent());
     }
 
     [Fact]
     public async Task DeleteItem_WhenItemNotFound_ReturnsStatus404NotFound()
     {
-        var item = new Item { Id = Guid.NewGuid(), Name = "Item1" };
-        var itemRepository = new Mock<IItemRepository>();
-        itemRepository
-            .Setup(repo => repo.DeleteItem(item.Id))
-            .ReturnsAsync(false);
+        var result = await ItemEndpoints.DeleteItem(_db.Object, _item.Id);
 
-        var result = await ItemEndpoints.DeleteItem(itemRepository.Object, item.Id);
-
-        result.Should().BeEquivalentTo(TypedResults.NotFound());
+        result.Should().Be(TypedResults.NotFound());
     }
 }

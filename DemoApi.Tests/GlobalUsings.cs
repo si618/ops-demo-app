@@ -1,4 +1,4 @@
-global using DemoApi.Features.InMemoryItems;
+global using DemoApi.Services.Crud;
 global using FluentAssertions;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.EntityFrameworkCore;

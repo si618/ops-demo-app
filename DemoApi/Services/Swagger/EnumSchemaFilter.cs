@@ -1,4 +1,4 @@
-namespace DemoApi.Features.Swagger;
+namespace DemoApi.Services.Swagger;
 
 /// <summary>
 /// Workaround for Enums only showing as integers

@@ -1,4 +1,4 @@
-﻿namespace DemoApi.Features.InMemoryItems;
+﻿namespace DemoApi.Services.Crud;
 
 public sealed record Item
 {

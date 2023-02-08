@@ -1,4 +1,4 @@
-namespace DemoApi.Features.Swagger;
+namespace DemoApi.Services.Swagger;
 
 public class SwaggerEndpoints : IEndpointDefinition
 {
@@ -14,19 +14,26 @@ public class SwaggerEndpoints : IEndpointDefinition
 
     public void DefineEndpoints(WebApplication app)
     {
+        const string swaggerCss = "SwaggerDark.css";
+
         app.UseSwagger();
-        app.UseSwaggerUI(opt => opt.InjectStylesheet("/swagger-ui/SwaggerDark.css"));
+
+        // Hat-tip: Romans Pokrovskis 🙇‍♂️ https://github.com/Amoenus/SwaggerDark/
+        app.UseSwaggerUI(opt => opt.InjectStylesheet($"/swagger-ui/{swaggerCss}"));
 
         // Redirect root to swagger
         app.MapGet("/", () => Results.Redirect($"/{RoutePrefix}"))
             .ExcludeFromDescription();
 
-        // Hat-tip: Romans Pokrovskis 🙇‍♂️ https://github.com/Amoenus/SwaggerDark/
-        app.MapGet("/swagger-ui/SwaggerDark.css", async (CancellationToken cancellationToken) =>
+        app.MapGet($"/swagger-ui/{swaggerCss}",
+        async (CancellationToken cancellationToken) =>
         {
-            var css = await File.ReadAllBytesAsync(
-                "Features\\Swagger\\SwaggerDark.css",
-                cancellationToken);
+            // Workaround for published app vs locally run project
+            var path = File.Exists(swaggerCss)
+                ? swaggerCss
+                : Path.Combine("Services", "Swagger", swaggerCss);
+
+            var css = await File.ReadAllBytesAsync(path, cancellationToken);
 
             return Results.File(css, "text/css");
         }).ExcludeFromDescription();

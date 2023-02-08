@@ -1,4 +1,4 @@
-namespace DemoApi.Features.Polly;
+namespace DemoApi.Services.Polly;
 
 public class PollyEndpoints : IEndpointDefinition
 {
@@ -11,6 +11,6 @@ public class PollyEndpoints : IEndpointDefinition
 
     public void DefineEndpoints(WebApplication app)
     {
-        // TODO demo polly integration & API resilience
+        // TODO Demo polly integration & API resilience
     }
 }
