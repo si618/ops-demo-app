@@ -1,7 +1,7 @@
 # argocd-demo-app
 
-[![build](https://github.com/si618/argocd-demo-app/actions/workflows/build.yml/badge.svg)](https://github.com/si618/argocd-demoapp/actions/workflows/build.yml)
-[![push](https://github.com/si618/argocd-demo-app/actions/workflows/push.yml/badge.svg)](https://github.com/si618/argocd-demoapp/actions/workflows/push.yml)
+[![build](https://github.com/si618/argocd-demo-app/actions/workflows/build.yml/badge.svg)](https://github.com/si618/argocd-demo-app/actions/workflows/build.yml)
+[![push](https://github.com/si618/argocd-demo-app/actions/workflows/push.yml/badge.svg)](https://github.com/si618/argocd-demo-app/actions/workflows/push.yml)
 
 Demo application pushed to [docker hub](https://hub.docker.com/repository/docker/si618/argocd-demo-app/general) for
 automated deployment using an [ArgoCD configuration](https://github.com/si618/argocd-demo-config)
