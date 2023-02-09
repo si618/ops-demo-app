@@ -50,7 +50,7 @@ dotnet build ./Demo.sln
 dotnet test ./Demo.sln
 
 # Verify app is working locally
-dotnet run --project ./DemoApi/DemoApi.csproj
+dotnet run --project ./DemoApi
 
 # Verify app is working in docker
 docker compose up -d
