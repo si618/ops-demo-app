@@ -33,8 +33,8 @@ jobs:
 
       - name: 🎨 Run dotnet format
         id: format
-        run: dotnet format --verbosity diagnostic --verify-no-changes --no-restore --exclude ./**.dcproj
+        run: dotnet format ./Demo.sln --no-restore --verbosity diagnostic --verify-no-changes --exclude ./*.dcproj
 
       - name: 🧪 Run dotnet test
         id: test
-        run: dotnet test ./Demo.sln --no-restore -c release
+        run: dotnet test ./Demo.sln -c release --no-restore
