@@ -1,12 +1,12 @@
-# argocd-demo-app
+# atops-demo-app
 
-[![build](https://github.com/si618/argocd-demo-app/actions/workflows/build.yml/badge.svg)](https://github.com/si618/argocd-demo-app/actions/workflows/build.yml)
-[![push](https://github.com/si618/argocd-demo-app/actions/workflows/push.yml/badge.svg)](https://github.com/si618/argocd-demo-app/actions/workflows/push.yml)
+[![build](https://github.com/si618/atops-demo-app/actions/workflows/build.yml/badge.svg)](https://github.com/si618/atops-demo-app/actions/workflows/build.yml)
+[![push](https://github.com/si618/atops-demo-app/actions/workflows/push.yml/badge.svg)](https://github.com/si618/atops-demo-app/actions/workflows/push.yml)
 
 Demo application for experimenting with DevOps, GitOps ... All The Ops!
 
-- [Pushes](https://github.com/si618/argocd-demo-app/actions/workflows/push.yml) to [docker hub](https://hub.docker.com/repository/docker/si618/argocd-demo-app/general)
-- Image can be automatically deployed to a Kubernetes cluster using an [ArgoCD configuration](https://github.com/si618/argocd-demo-config)
+- [Pushes](https://github.com/si618/atops-demo-app/actions/workflows/push.yml) to [docker hub](https://hub.docker.com/repository/docker/si618/atops-demo-app/general)
+- Image can be automatically deployed to a Kubernetes cluster using an [ArgoCD configuration](https://github.com/si618/atops-demo-config)
 
 ## Setup
 
@@ -44,14 +44,13 @@ sudo snap enable docke
 
 ```bash
 # Clone and build demo app
-git clone https://github.com/si618/argocd-demo-app.git
-cd argocd-demo-app
-dotnet restore
-dotnet build --no-restore
-dotnet test --no-restore
+git clone https://github.com/si618/atops-demo-app.git
+cd atops-demo-app
+dotnet build ./DemoApi/DemoApi.csproj
+dotnet test ./DemoApi.Tests/DemoApi.Tests.csproj
 
 # Verify app is working locally
-dotnet run --project ./DemoApi
+dotnet run --project ./DemoApi/DemoApi.csproj
 
 # Verify app is working in docker
 docker compose up -d
