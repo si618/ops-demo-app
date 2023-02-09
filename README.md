@@ -46,8 +46,8 @@ sudo snap enable docke
 # Clone and build demo app
 git clone https://github.com/si618/atops-demo-app.git
 cd atops-demo-app
-dotnet build ./DemoApi/DemoApi.csproj
-dotnet test ./DemoApi.Tests/DemoApi.Tests.csproj
+dotnet build ./Demo.sln
+dotnet test ./Demo.sln
 
 # Verify app is working locally
 dotnet run --project ./DemoApi/DemoApi.csproj
