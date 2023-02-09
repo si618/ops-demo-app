@@ -3,8 +3,10 @@
 [![build](https://github.com/si618/argocd-demo-app/actions/workflows/build.yml/badge.svg)](https://github.com/si618/argocd-demo-app/actions/workflows/build.yml)
 [![push](https://github.com/si618/argocd-demo-app/actions/workflows/push.yml/badge.svg)](https://github.com/si618/argocd-demo-app/actions/workflows/push.yml)
 
-Demo application pushed to [docker hub](https://hub.docker.com/repository/docker/si618/argocd-demo-app/general) for
-automated deployment using an [ArgoCD configuration](https://github.com/si618/argocd-demo-config)
+Demo application for experimenting with DevOps, GitOps ... All The Ops!
+
+- [Pushes](https://github.com/si618/argocd-demo-app/actions/workflows/push.yml) to [docker hub](https://hub.docker.com/repository/docker/si618/argocd-demo-app/general)
+- Image can be automatically deployed to a Kubernetes cluster using an [ArgoCD configuration](https://github.com/si618/argocd-demo-config)
 
 ## Setup
 
@@ -23,6 +25,21 @@ sudo apt-get update && sudo apt-get install -y dotnet-sdk-7.0
 sudo apt-get update && sudo apt-get install -y aspnetcore-runtime-7.0
 ```
 
+### Install docker
+
+```bash
+sudo snap install docker
+```
+```bash
+# Optionally run docker as current user
+# Warning: https://snapcraft.io/docker
+sudo addgroup --system docker
+sudo adduser $USER docker
+newgrp docker
+sudo snap disable docker
+sudo snap enable docke
+```
+
 ### Install demo app
 
 ```bash
@@ -33,6 +50,9 @@ dotnet restore
 dotnet build --no-restore
 dotnet test --no-restore
 
-# Verify demo app is working locally
+# Verify app is working locally
 dotnet run --project ./DemoApi
+
+# Verify app is working in docker
+docker compose up -d
 ```

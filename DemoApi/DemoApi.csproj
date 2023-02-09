@@ -4,6 +4,7 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>20a60f31-dce8-4830-a110-2db8372f40ef</UserSecretsId>
     <RootNamespace>DemoApi</RootNamespace>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>

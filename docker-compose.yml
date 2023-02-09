@@ -1,20 +1,8 @@
 version: '3.4'
 
 services:
-  api:
+  demoapi:
+    image: ${DOCKER_REGISTRY-}atops-demo-api
     build:
       context: .
-      dockerfile: Dockerfile
-    ports:
-      - '42433:42443'
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:42443
-      - ASPNETCORE_HTTPS_PORT=42443
-      # dotnet dev-certs https --clean
-      # dotnet dev-certs https -ep "$env:USERPROFILE\.aspnet\https\DemoApi.pfx" -p demo
-      # dotnet dev-certs https --trust
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=demo
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/DemoApi.pfx
-    volumes:
-      - ~/.aspnet/https:/https:ro
+      dockerfile: DemoApi/Dockerfile
