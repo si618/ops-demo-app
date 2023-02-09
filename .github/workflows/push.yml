@@ -26,6 +26,6 @@ jobs:
       - name: 🚀 Build and push Docker image
         uses: docker/build-push-action@v4.0.0
         with:
-          context: .
+          context: ./DemoApi
           push: true
           tags: si618/atops-demo-app:latest
