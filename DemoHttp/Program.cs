@@ -23,4 +23,10 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+var version = Assembly
+    .GetExecutingAssembly()!
+    .GetCustomAttribute<AssemblyFileVersionAttribute>()?
+    .Version;
+app.Logger.LogInformation("Running demo http {Version}", version);
+
 app.Run();
