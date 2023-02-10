@@ -1,8 +1,11 @@
-version: '3.4'
+version: '3.9'
 
 services:
-  demoapi:
-    image: ${DOCKER_REGISTRY-}atops-demo-api
+  demo-http:
+    image: ${DOCKER_REGISTRY-}atops-demo-http
+    deploy:
+      labels:
+        com.docker.compose.project.config_files: "Dotnet Minimal API Demo"
     build:
       context: .
-      dockerfile: DemoApi/Dockerfile
+      dockerfile: DemoHttp/Dockerfile

@@ -43,15 +43,14 @@ sudo snap enable docke
 ### Install demo app
 
 ```bash
-# Clone and build demo app
 git clone https://github.com/si618/atops-demo-app.git
 cd atops-demo-app
 dotnet build ./Demo.sln
 dotnet test ./Demo.sln
 
-# Verify app is working locally
-dotnet run --project ./DemoApi
+# Verify http demo is working locally
+dotnet run --project ./DemoHttp
 
-# Verify app is working in docker
+# Verify http demo is working in docker
 docker compose up -d
 ```

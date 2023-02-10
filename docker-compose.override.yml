@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  demoapi:
+  demo-http:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:80;http://+:443

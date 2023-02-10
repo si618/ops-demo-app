@@ -7,7 +7,7 @@
     <ProjectGuid>9cd18883-76f9-411a-b121-2586513ff0ea</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>demoapi</DockerServiceName>
+    <DockerServiceName>demo-http</DockerServiceName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +15,6 @@
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
     <None Include="docker-compose.yml" />
-    <None Include=".dockerignore" />
   </ItemGroup>
 
 </Project>

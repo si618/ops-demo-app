@@ -31,7 +31,7 @@ jobs:
         id: build
         run: dotnet build ./Demo.sln -c release
 
-      - name: 🎨 Run dotnet format
+      - name: 🧐 Run dotnet format
         id: format
         run: dotnet format ./Demo.sln --no-restore --verbosity diagnostic --verify-no-changes --exclude ./*.dcproj
 
