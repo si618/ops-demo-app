@@ -6,6 +6,7 @@ on:
 env:
   DOCKER_IMAGE: atops-demo-http
   DOCKER_VERSION: latest
+  DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
 
 jobs:
   push:
@@ -33,7 +34,7 @@ jobs:
       - name: 🏷️ Tag docker image
         run: docker tag \
           ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }} \
-          ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }}
+          ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }}
 
       - name: 🚀 Push docker image
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }}
+        run: docker push ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }}
