@@ -31,9 +31,7 @@ jobs:
         run: docker compose up -d
 
       - name: 🏷️ Tag docker image
-        run: docker tag |
-          ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }} |
-          ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }}
+        run: docker tag ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }} ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }}
 
       - name: 🚀 Push docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }}
