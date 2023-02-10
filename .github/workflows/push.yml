@@ -5,6 +5,7 @@ on:
 
 env:
   DOCKER_IMAGE: atops-demo-http
+  # TODO Investigate how to combine NBGV_SimpleVersion with deployment tag in config repo - explicit better than latest?
   DOCKER_VERSION: latest
 
 jobs:
@@ -22,16 +23,22 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: 🔨 Add versioning
-        uses: dotnet/nbgv@v0.4.0
-        with:
-          setAllVars: true
+# TODO Testing if batteries included version
+#      - name: 🔨 Add versioning
+#        uses: dotnet/nbgv@v0.4.0
+#        with:
+#          setAllVars: true
+      - name: 🧪 Echo app version
+        run: echo ${{ env.NBGV_SimpleVersion }}
 
       - name: 📦️ Compose docker image
         run: docker compose up -d
 
       - name: 🏷️ Tag docker image
-        run: docker tag ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }} ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }}
+        run: |
+          docker tag \
+            ${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }} \
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }}
 
       - name: 🚀 Push docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_VERSION }}
