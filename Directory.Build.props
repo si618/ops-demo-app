@@ -17,7 +17,7 @@
     <PackageReference Include="Nerdbank.GitVersioning"
                       Condition="!Exists('packages.config') AND '$(MSBuildProjectExtension)' != '.dcproj'">
       <PrivateAssets>all</PrivateAssets>
-      <Version>3.6.128</Version>
+      <Version>3.6.132</Version>
     </PackageReference>
   </ItemGroup>
 
